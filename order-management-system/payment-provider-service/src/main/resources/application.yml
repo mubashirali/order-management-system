@@ -1,0 +1,19 @@
+micronaut:
+  application:
+    name: paymentprovider
+  server:
+    port: 8081
+  codec:
+    json:
+      additionalTypes:
+        - text/javascript
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+eureka:
+  client:
+    registration:
+      enabled: true
+    defaultZone: "${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}"

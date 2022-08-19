@@ -1,0 +1,58 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.5.1"
+    id("io.franzbecker.gradle-lombok") version "5.0.0"
+}
+
+version = "0.1"
+group = "com.order"
+
+def versions = [
+        ScalaBinary: "2.13"
+]
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("io.micronaut.discovery:micronaut-discovery-client")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+    implementation platform("com.typesafe.akka:akka-bom_${versions.ScalaBinary}:2.6.19")
+    implementation("com.typesafe.akka:akka-persistence-typed_${versions.ScalaBinary}")
+    implementation("com.typesafe.akka:akka-actor_${versions.ScalaBinary}")
+    implementation("com.typesafe.akka:akka-cluster-tools_${versions.ScalaBinary}")
+    implementation("com.typesafe.akka:akka-serialization-jackson_${versions.ScalaBinary}")
+    testImplementation("com.typesafe.akka:akka-persistence-testkit_${versions.ScalaBinary}")
+    testImplementation("junit:junit:4.13.1")
+    testImplementation('org.mockito:mockito-core:4.6.1')
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+}
+
+
+application {
+    mainClass.set("com.order.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit4")
+    processing {
+        incremental(true)
+        annotations("com.order.*")
+    }
+}
+
+
+
